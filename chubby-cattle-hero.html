@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chubby Cattle BBQ — Monterey Park</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --char: #0e0c0a;
+    --ember: #C8401A;
+    --ember-light: #E8592C;
+    --gold: #B8892A;
+    --gold-light: #D4A84B;
+    --cream: #F2E8D6;
+    --ash: #2a2420;
+    --smoke: #4a3f38;
+    --mist: rgba(242,232,214,0.08);
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--char);
+    color: var(--cream);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--ember);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(200,64,26,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.25s ease, height 0.25s ease, opacity 0.3s ease;
+  }
+  body:hover .cursor { opacity: 1; }
+  a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeDown 0.8s ease both;
+    animation-delay: 0.1s;
+  }
+  nav::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(14,12,10,0.7) 0%, transparent 100%);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: var(--cream);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo-mark {
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(242,232,214,0.6);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--cream); }
+  .nav-reserve {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--char);
+    background: var(--gold);
+    border: none;
+    padding: 10px 22px;
+    cursor: none;
+    transition: background 0.2s ease, transform 0.15s ease;
+    text-decoration: none;
+  }
+  .nav-reserve:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  /* Background plate — layered atmosphere */
+  .hero-bg {
+    position: absolute; inset: 0;
+    z-index: 0;
+  }
+
+  /* Charcoal base */
+  .hero-bg-base {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, #2a1a10 0%, #0e0c0a 65%);
+  }
+
+  /* Ember glow source — the "grill" */
+  .grill-glow {
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 70%;
+    background: radial-gradient(ellipse at 50% 100%,
+      rgba(200,64,26,0.35) 0%,
+      rgba(180,90,20,0.18) 25%,
+      rgba(100,40,10,0.08) 50%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  /* Ambient warm scatter */
+  .hero-scatter {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 70%, rgba(184,137,42,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 80% 30%, rgba(200,64,26,0.04) 0%, transparent 35%);
+  }
+
+  /* Smoke / mist layers */
+  .smoke-layer {
+    position: absolute; inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='800' height='600' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.6;
+    animation: smokeDrift 18s ease-in-out infinite alternate;
+  }
+  @keyframes smokeDrift {
+    0%   { transform: scale(1) translate(0,0); opacity: 0.6; }
+    100% { transform: scale(1.05) translate(-15px, -20px); opacity: 0.4; }
+  }
+
+  /* Stylized grill surface */
+  .grill-surface {
+    position: absolute;
+    bottom: -2px; left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 320px;
+  }
+  .grill-bars {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 160px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-end;
+    padding: 0 40px;
+    perspective: 400px;
+    transform: rotateX(22deg);
+    transform-origin: bottom center;
+  }
+  .grill-bar {
+    flex: 1;
+    height: 100%;
+    background: linear-gradient(to top, #1a0e08, #2d1a0f, #1a0e08);
+    border-radius: 1px;
+    position: relative;
+    box-shadow: 0 0 12px rgba(200,64,26,0.3), inset 0 0 8px rgba(200,80,26,0.15);
+  }
+  .grill-bar::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(200,64,26,0.4), rgba(220,100,30,0.2), transparent);
+    animation: barPulse 2.5s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i, 0) * 0.18s);
+  }
+  @keyframes barPulse {
+    0%   { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  /* Floating ember particles */
+  .embers {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .ember {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--ember);
+    border-radius: 50%;
+    box-shadow: 0 0 6px 2px rgba(200,64,26,0.7);
+    animation: rise var(--dur, 4s) ease-in infinite;
+    animation-delay: var(--delay, 0s);
+    left: var(--x, 50%);
+    bottom: -10px;
+  }
+  .ember.small { width: 2px; height: 2px; background: var(--gold); box-shadow: 0 0 4px 1px rgba(184,137,42,0.8); }
+  @keyframes rise {
+    0%   { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+    50%  { transform: translateY(-40vh) translateX(var(--dx, 20px)) scale(0.8); opacity: 0.7; }
+    100% { transform: translateY(-85vh) translateX(var(--dx2, -10px)) scale(0.2); opacity: 0; }
+  }
+
+  /* Meat sizzle visual — CSS wagyu slice */
+  .wagyu-visual {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-52%);
+    width: 360px;
+    animation: fadeInRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.6s;
+  }
+  .wagyu-plate {
+    position: relative;
+    width: 100%;
+    padding-top: 75%;
+  }
+  .wagyu-slice {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(184,137,42,0.2),
+      0 0 60px rgba(200,64,26,0.25),
+      0 40px 80px rgba(0,0,0,0.7);
+  }
+  /* CSS-painted wagyu marbling */
+  .wagyu-meat {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 40%, #8B1A08 0%, transparent 40%),
+      radial-gradient(ellipse at 70% 60%, #7A1506 0%, transparent 35%),
+      radial-gradient(ellipse at 50% 20%, #A02010 0%, transparent 50%),
+      linear-gradient(135deg, #5C0E04 0%, #8B1A08 30%, #6B1006 60%, #9B2010 100%);
+    animation: sizzleShift 6s ease-in-out infinite alternate;
+  }
+  @keyframes sizzleShift {
+    0%   { filter: brightness(1) saturate(1); }
+    100% { filter: brightness(1.08) saturate(1.15); }
+  }
+  /* Fat marbling streaks */
+  .wagyu-fat {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        128deg,
+        transparent 0px,
+        transparent 14px,
+        rgba(240,200,160,0.12) 14px,
+        rgba(240,200,160,0.12) 16px,
+        transparent 16px,
+        transparent 30px,
+        rgba(220,180,130,0.08) 30px,
+        rgba(220,180,130,0.08) 32px
+      ),
+      repeating-linear-gradient(
+        55deg,
+        transparent 0px,
+        transparent 22px,
+        rgba(230,190,145,0.07) 22px,
+        rgba(230,190,145,0.07) 24px
+      );
+  }
+  /* Heat bloom on meat */
+  .wagyu-heat {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, rgba(200,64,26,0.35) 0%, transparent 60%);
+    animation: heatPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes heatPulse {
+    0%, 100% { opacity: 0.7; }
+    50%       { opacity: 1; }
+  }
+  /* Sear crust along edges */
+  .wagyu-crust {
+    position: absolute; inset: 0;
+    border-radius: 12px;
+    box-shadow: inset 0 0 30px rgba(10,4,2,0.5);
+  }
+  /* Grade badge */
+  .grade-badge {
+    position: absolute;
+    top: -14px; left: -14px;
+    width: 68px; height: 68px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(184,137,42,0.5);
+    z-index: 2;
+    animation: badgePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: 1.2s;
+  }
+  @keyframes badgePop {
+    0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .grade-badge-top {
+    font-family: var(--font-serif);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--char);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 1px;
+  }
+  .grade-badge-main {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--char);
+    line-height: 1;
+  }
+  /* Sizzle steam */
+  .steam {
+    position: absolute;
+    bottom: calc(100% - 8px);
+    left: 20%;
+    width: 60%;
+    height: 80px;
+    pointer-events: none;
+  }
+  .steam-wisp {
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to top, rgba(242,232,214,0.15), transparent);
+    border-radius: 2px;
+    animation: steamRise var(--sd, 2s) ease-in-out infinite;
+    animation-delay: var(--sdelay, 0s);
+    left: var(--sx, 30%);
+  }
+  @keyframes steamRise {
+    0%   { height: 0; opacity: 0; transform: translateX(0) scaleX(1); }
+    30%  { opacity: 0.6; }
+    100% { height: 70px; opacity: 0; transform: translateX(var(--sdx, 8px)) scaleX(3); }
+  }
+
+  /* ── HERO CONTENT ── */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding: 0 8% 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+  }
+  .hero-text { max-width: 640px; }
+
+  /* Location pill */
+  .location-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    border: 1px solid rgba(184,137,42,0.35);
+    padding: 6px 14px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.7s ease both;
+    animation-delay: 0.2s;
+  }
+  .location-pill::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold);
+    animation: pingDot 2s ease-in-out infinite;
+  }
+  @keyframes pingDot {
+    0%, 100% { box-shadow: 0 0 4px var(--gold); }
+    50%       { box-shadow: 0 0 12px var(--gold), 0 0 20px rgba(184,137,42,0.4); }
+  }
+
+  /* Main headline */
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(72px, 11vw, 148px);
+    line-height: 0.88;
+    letter-spacing: 0.01em;
+    color: var(--cream);
+    margin-bottom: 6px;
+    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.3s;
+  }
+  .hero-headline .line-ember {
+    color: var(--ember-light);
+    display: block;
+  }
+  .hero-headline .line-thin {
+    display: block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(42px, 6vw, 82px);
+    letter-spacing: 0.02em;
+    color: rgba(242,232,214,0.55);
+    margin-top: -4px;
+  }
+
+  /* Tagline */
+  .hero-tagline {
+    font-family: var(--font-serif);
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(242,232,214,0.65);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 420px;
+    animation: fadeUp 0.9s ease both;
+    animation-delay: 0.45s;
+  }
+
+  /* CTA row */
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.9s ease both;
+    animation-delay: 0.58s;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--char);
+    background: var(--ember);
+    text-decoration: none;
+    padding: 16px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    cursor: none;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    transform-origin: left;
+  }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-primary:hover::after { transform: scaleX(1); }
+  .btn-arrow {
+    font-size: 18px;
+    transition: transform 0.2s ease;
+  }
+  .btn-primary:hover .btn-arrow { transform: translateX(4px); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(242,232,214,0.65);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(242,232,214,0.2);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    cursor: none;
+  }
+  .btn-secondary:hover { color: var(--cream); border-color: rgba(242,232,214,0.5); }
+
+  /* ── SOCIAL PROOF STRIP ── */
+  .proof-strip {
+    position: relative;
+    z-index: 10;
+    background: rgba(14,12,10,0.85);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(184,137,42,0.15);
+    padding: 20px 8%;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow: hidden;
+  }
+  .proof-strip::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: 0.4;
+  }
+  .proof-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 40px;
+    border-right: 1px solid rgba(242,232,214,0.08);
+    animation: fadeUp 0.8s ease both;
+  }
+  .proof-item:first-child { padding-left: 0; }
+  .proof-item:last-child { border-right: none; }
+  .proof-item:nth-child(1) { animation-delay: 0.7s; }
+  .proof-item:nth-child(2) { animation-delay: 0.8s; }
+  .proof-item:nth-child(3) { animation-delay: 0.9s; }
+  .proof-item:nth-child(4) { animation-delay: 1.0s; }
+  .proof-platform {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(242,232,214,0.4);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .proof-stars {
+    display: flex;
+    gap: 2px;
+    color: var(--gold);
+    font-size: 13px;
+    line-height: 1;
+  }
+  .proof-score {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .proof-count {
+    font-size: 11px;
+    color: rgba(242,232,214,0.35);
+    margin-top: 1px;
+  }
+  .proof-divider-text {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(242,232,214,0.3);
+    padding: 0 20px;
+  }
+
+  /* ── TIER PREVIEW ── */
+  .tier-section {
+    background: #0e0c0a;
+    padding: 80px 8%;
+    position: relative;
+    overflow: hidden;
+  }
+  .tier-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 8%; right: 8%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(184,137,42,0.3), transparent);
+  }
+  .tier-label {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    animation: fadeUp 0.7s ease both;
+  }
+  .tier-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 48px;
+    line-height: 1.2;
+    animation: fadeUp 0.7s ease both;
+    animation-delay: 0.1s;
+  }
+  .tier-heading em {
+    font-style: italic;
+    color: rgba(242,232,214,0.5);
+  }
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(184,137,42,0.12);
+    border: 1px solid rgba(184,137,42,0.12);
+  }
+  .tier-card {
+    background: var(--char);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+    cursor: none;
+  }
+  .tier-card:hover { background: #141008; }
+  .tier-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .tier-card:hover::before { transform: scaleX(1); }
+  .tier-silver::before { background: #9BA3A8; }
+  .tier-gold::before   { background: var(--gold); }
+  .tier-diamond::before { background: linear-gradient(90deg, #5B8DB8, #9BC4E2, #5B8DB8); }
+
+  .tier-name {
+    font-family: var(--font-display);
+    font-size: 36px;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .tier-silver .tier-name { color: #9BA3A8; }
+  .tier-gold .tier-name   { color: var(--gold-light); }
+  .tier-diamond .tier-name { color: #9BC4E2; }
+
+  .tier-price {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(242,232,214,0.45);
+    margin-bottom: 28px;
+  }
+  .tier-price strong {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 400;
+    color: var(--cream);
+    vertical-align: baseline;
+    margin-right: 4px;
+  }
+  .tier-features {
+    list-style: none;
+    margin-bottom: 36px;
+  }
+  .tier-features li {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(242,232,214,0.6);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(242,232,214,0.06);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tier-features li::before {
+    content: '—';
+    color: rgba(242,232,214,0.2);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .tier-features li.highlight {
+    color: var(--cream);
+    font-weight: 400;
+  }
+  .tier-features li.highlight::before { content: '✦'; font-size: 9px; color: var(--gold); }
+
+  .tier-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: gap 0.2s ease;
+    cursor: none;
+  }
+  .tier-silver .tier-cta { color: #9BA3A8; }
+  .tier-gold .tier-cta   { color: var(--gold-light); }
+  .tier-diamond .tier-cta { color: #9BC4E2; }
+  .tier-cta:hover { gap: 14px; }
+
+  /* Gold tier — featured */
+  .tier-gold {
+    background: #110e08;
+    position: relative;
+  }
+  .tier-gold::after {
+    content: 'Most Popular';
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--char);
+    background: var(--gold);
+    padding: 4px 10px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    0%   { opacity: 0; transform: translateY(22px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    0%   { opacity: 0; transform: translateY(-16px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInRight {
+    0%   { opacity: 0; transform: translateY(-52%) translateX(40px); }
+    100% { opacity: 1; transform: translateY(-52%) translateX(0); }
+  }
+
+  /* ── SCROLLING HIGHLIGHT STRIP ── */
+  .feature-strip {
+    background: #0a0806;
+    border-top: 1px solid rgba(184,137,42,0.1);
+    border-bottom: 1px solid rgba(184,137,42,0.1);
+    padding: 18px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .feature-track {
+    display: inline-flex;
+    gap: 0;
+    animation: marquee 22s linear infinite;
+  }
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .feature-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 48px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(242,232,214,0.4);
+  }
+  .feature-dot {
+    width: 4px; height: 4px;
+    background: var(--ember);
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px var(--ember);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero-content { grid-template-columns: 1fr; padding-bottom: 60px; }
+    .wagyu-visual { display: none; }
+    .hero-headline { font-size: clamp(60px, 15vw, 100px); }
+    .proof-strip { flex-wrap: wrap; gap: 20px; padding: 20px 24px; }
+    .proof-item { padding: 0 20px; }
+    .tier-grid { grid-template-columns: 1fr; }
+    .tier-section { padding: 60px 24px; }
+    .proof-divider-text { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    .hero-content { padding: 0 20px 50px; }
+    .hero-tagline { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-mark">CC</div>
+    Chubby Cattle
+  </a>
+  <ul class="nav-links">
+    <li><a href="/menu">Menu</a></li>
+    <li><a href="/experience">Experience</a></li>
+    <li><a href="/about">Our Story</a></li>
+    <li><a href="/contact">Visit</a></li>
+  </ul>
+  <a href="/reserve" class="nav-reserve">Reserve a Table</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+
+  <!-- Background layers -->
+  <div class="hero-bg">
+    <div class="hero-bg-base"></div>
+    <div class="grill-glow"></div>
+    <div class="hero-scatter"></div>
+    <div class="smoke-layer"></div>
+
+    <!-- Grill surface -->
+    <div class="grill-surface">
+      <div class="grill-bars" id="grillBars"></div>
+    </div>
+
+    <!-- Ember particles -->
+    <div class="embers" id="embers"></div>
+  </div>
+
+  <!-- Wagyu visual -->
+  <div class="wagyu-visual">
+    <div class="wagyu-plate">
+      <div class="wagyu-slice">
+        <div class="wagyu-meat"></div>
+        <div class="wagyu-fat"></div>
+        <div class="wagyu-heat"></div>
+        <div class="wagyu-crust"></div>
+      </div>
+      <div class="grade-badge">
+        <div class="grade-badge-top">Certified</div>
+        <div class="grade-badge-main">A5</div>
+      </div>
+      <!-- Steam wisps -->
+      <div class="steam">
+        <div class="steam-wisp" style="--sx:15%;--sd:2.2s;--sdelay:0s;--sdx:6px;height:50px;"></div>
+        <div class="steam-wisp" style="--sx:30%;--sd:2.8s;--sdelay:0.5s;--sdx:-8px;height:40px;"></div>
+        <div class="steam-wisp" style="--sx:50%;--sd:2.4s;--sdelay:1s;--sdx:5px;height:60px;"></div>
+        <div class="steam-wisp" style="--sx:68%;--sd:3s;--sdelay:0.3s;--sdx:-6px;height:45px;"></div>
+        <div class="steam-wisp" style="--sx:82%;--sd:2.6s;--sdelay:0.8s;--sdx:9px;height:38px;"></div>
+      </div>
+    </div>
+    <!-- Wooden box label -->
+    <div style="text-align:center;margin-top:18px;">
+      <div style="display:inline-block;border:1px solid rgba(184,137,42,0.3);padding:8px 20px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:rgba(242,232,214,0.4);letter-spacing:0.1em;">Presented in the</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold-light);letter-spacing:0.18em;">Chubby Wooden Box</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero content -->
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="location-pill">Monterey Park · SGV</div>
+      <h1 class="hero-headline">
+        Fire<span class="line-ember">Meets</span><span class="line-thin">Wagyu</span>
+      </h1>
+      <p class="hero-tagline">
+        Unlimited A5 Wagyu, Tomahawk, and fresh sushi — grilled at your table
+        in Monterey Park's most celebrated yakiniku experience.
+      </p>
+      <div class="cta-row">
+        <a href="/reserve" class="btn-primary">
+          Reserve Your Table <span class="btn-arrow">→</span>
+        </a>
+        <a href="/menu" class="btn-secondary">
+          View AYCE Packages
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCROLLING FEATURE STRIP ── -->
+<div class="feature-strip">
+  <div class="feature-track" id="featureTrack">
+    <span class="feature-item"><span class="feature-dot"></span>Certified A5 Wagyu</span>
+    <span class="feature-item"><span class="feature-dot"></span>All-You-Can-Eat</span>
+    <span class="feature-item"><span class="feature-dot"></span>Unlimited Sushi & Sashimi</span>
+    <span class="feature-item"><span class="feature-dot"></span>iPad Ordering at Every Table</span>
+    <span class="feature-item"><span class="feature-dot"></span>Tomahawk Steak</span>
+    <span class="feature-item"><span class="feature-dot"></span>Truffle Fries</span>
+    <span class="feature-item"><span class="feature-dot"></span>Restaurant-Owned Ranch</span>
+    <span class="feature-item"><span class="feature-dot"></span>Grill Swap Service</span>
+    <span class="feature-item"><span class="feature-dot"></span>Certified A5 Wagyu</span>
+    <span class="feature-item"><span class="feature-dot"></span>All-You-Can-Eat</span>
+    <span class="feature-item"><span class="feature-dot"></span>Unlimited Sushi & Sashimi</span>
+    <span class="feature-item"><span class="feature-dot"></span>iPad Ordering at Every Table</span>
+    <span class="feature-item"><span class="feature-dot"></span>Tomahawk Steak</span>
+    <span class="feature-item"><span class="feature-dot"></span>Truffle Fries</span>
+    <span class="feature-item"><span class="feature-dot"></span>Restaurant-Owned Ranch</span>
+    <span class="feature-item"><span class="feature-dot"></span>Grill Swap Service</span>
+  </div>
+</div>
+
+<!-- ── SOCIAL PROOF ── -->
+<div class="proof-strip">
+  <div class="proof-item" style="animation-delay:0.7s">
+    <div>
+      <div class="proof-platform">Yelp</div>
+      <div class="proof-stars">★★★★★</div>
+    </div>
+    <div>
+      <div class="proof-score">4.7</div>
+      <div class="proof-count">4,800+ reviews</div>
+    </div>
+  </div>
+  <div class="proof-item" style="animation-delay:0.8s">
+    <div>
+      <div class="proof-platform">Google</div>
+      <div class="proof-stars">★★★★★</div>
+    </div>
+    <div>
+      <div class="proof-score">4.8</div>
+      <div class="proof-count">5,000+ reviews</div>
+    </div>
+  </div>
+  <div class="proof-divider-text">"The best AYCE Wagyu in the SGV. We always leave happy."</div>
+  <div class="proof-item" style="animation-delay:0.9s">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(242,232,214,0.5);max-width:180px;line-height:1.5;">
+      Established 2014 · Monterey Park, CA
+    </div>
+  </div>
+  <div class="proof-item" style="animation-delay:1.0s">
+    <div style="text-align:right">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--cream);line-height:1">Open Daily</div>
+      <div style="font-size:11px;color:rgba(242,232,214,0.4);letter-spacing:0.06em;margin-top:2px">12pm – 10pm · Fri/Sat til 11pm</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TIER PREVIEW ── -->
+<section class="tier-section">
+  <div class="tier-label">All-You-Can-Eat Packages</div>
+  <h2 class="tier-heading">Choose your <em>level of indulgence</em></h2>
+  <div class="tier-grid">
+
+    <!-- Silver -->
+    <div class="tier-card tier-silver">
+      <div class="tier-name">Silver</div>
+      <div class="tier-price">From <strong>$55</strong>per person</div>
+      <ul class="tier-features">
+        <li class="highlight">AYCE Wagyu selection</li>
+        <li>Unlimited sushi & sashimi</li>
+        <li>American & Australian beef cuts</li>
+        <li>Sides & appetizers</li>
+        <li>Soft drinks included</li>
+      </ul>
+      <a href="/reserve?tier=silver" class="tier-cta">Reserve Silver →</a>
+    </div>
+
+    <!-- Gold (featured) -->
+    <div class="tier-card tier-gold">
+      <div class="tier-name">Gold</div>
+      <div class="tier-price">From <strong>$75</strong>per person</div>
+      <ul class="tier-features">
+        <li class="highlight">Everything in Silver</li>
+        <li class="highlight">Japanese A5 Wagyu</li>
+        <li>Premium seafood options</li>
+        <li>Lobster & premium cuts</li>
+        <li>Truffle fries & specialty sides</li>
+      </ul>
+      <a href="/reserve?tier=gold" class="tier-cta">Reserve Gold →</a>
+    </div>
+
+    <!-- Diamond -->
+    <div class="tier-card tier-diamond">
+      <div class="tier-name">Diamond</div>
+      <div class="tier-price">From <strong>$99</strong>per person</div>
+      <ul class="tier-features">
+        <li class="highlight">Everything in Gold</li>
+        <li class="highlight">Tomahawk steak</li>
+        <li class="highlight">Wooden box Wagyu presentation</li>
+        <li>Full premium sushi menu</li>
+        <li>Premium beverage selection</li>
+      </ul>
+      <a href="/reserve?tier=diamond" class="tier-cta">Reserve Diamond →</a>
+    </div>
+
+  </div>
+  <p style="margin-top:28px;font-size:12px;color:rgba(242,232,214,0.25);font-family:'DM Sans',sans-serif;letter-spacing:0.04em;">
+    * Prices shown are starting rates per person. Solo dining available Mon–Thu. Time limits apply. Call (626) 317-9348 for group reservations.
+  </p>
+</section>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function loop() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    ring.style.left  = rx + 'px'; ring.style.top  = ry + 'px';
+    requestAnimationFrame(loop);
+  })();
+
+  // Build grill bars
+  const grillBars = document.getElementById('grillBars');
+  for (let i = 0; i < 22; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'grill-bar';
+    bar.style.setProperty('--i', i);
+    grillBars.appendChild(bar);
+  }
+
+  // Spawn embers
+  const emberContainer = document.getElementById('embers');
+  function spawnEmber() {
+    const e = document.createElement('div');
+    const small = Math.random() > 0.6;
+    e.className = 'ember' + (small ? ' small' : '');
+    const x = 25 + Math.random() * 50;
+    const dur = 3 + Math.random() * 4;
+    const delay = Math.random() * 2;
+    const dx  = (Math.random() - 0.5) * 80 + 'px';
+    const dx2 = (Math.random() - 0.5) * 60 + 'px';
+    e.style.cssText = `--x:${x}%;--dur:${dur}s;--delay:${delay}s;--dx:${dx};--dx2:${dx2};left:${x}%;`;
+    emberContainer.appendChild(e);
+    setTimeout(() => e.remove(), (dur + delay) * 1000);
+  }
+  setInterval(spawnEmber, 420);
+  for (let i = 0; i < 12; i++) spawnEmber();
+
+  // Intersection observer for tier section animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeUp 0.7s ease both';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.tier-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.animationDelay = (i * 0.12) + 's';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
